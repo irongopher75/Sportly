@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Match Detail"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tvSport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sport: Football"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvTurf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Turf: Turf X"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date &amp; Time: 2026-10-25 18:00"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Competitive Level: Casual"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Cost Split Display -->
+        <TextView
+            android:id="@+id/tvCostSplit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Cost: $0.00 | Per Player: $0.00"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnJoinGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Request to Join Match"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Host Management Sections -->
+        <LinearLayout
+            android:id="@+id/layoutHostSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Host Management: Pending Requests"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/layoutPendingRequests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirmed Roster &amp; Payment Status"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/layoutConfirmedRoster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/btnDeleteGame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel / Delete Match"
+                android:backgroundTint="#D32F2F"
+                android:textColor="@android:color/white"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

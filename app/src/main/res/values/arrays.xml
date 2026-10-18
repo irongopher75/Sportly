@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="sports_array">
+        <item>Football</item>
+        <item>Cricket</item>
+        <item>Badminton</item>
+        <item>Basketball</item>
+        <item>Tennis</item>
+    </string-array>
+</resources>

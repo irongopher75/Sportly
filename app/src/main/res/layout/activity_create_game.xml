@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Pick-up Match"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="24dp"/>
+
+        <EditText
+            android:id="@+id/etMatchTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Match Title (e.g., 5-a-side Turf Clash)"
+            android:inputType="text"
+            android:autofillHints="name"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_edit_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Sport"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerSport"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_edit_text"/>
+
+        <EditText
+            android:id="@+id/etTurfName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Turf Name (e.g., Urban Arena Turf X)"
+            android:inputType="text"
+            android:autofillHints="name"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_edit_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/etHourlyRate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Hourly Rate ($)"
+                android:inputType="numberDecimal"
+                android:autofillHints="postalAddress"
+                android:padding="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_edit_text"/>
+
+            <EditText
+                android:id="@+id/etDurationHours"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Duration (Hours)"
+                android:inputType="numberDecimal"
+                android:autofillHints="postalAddress"
+                android:padding="16dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_edit_text"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etMaxPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Max Players (e.g., 10)"
+            android:inputType="number"
+            android:autofillHints="number"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_edit_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnPickDate"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Select Date"
+                android:backgroundTint="@color/accent"
+                android:textColor="@color/text_primary"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnPickTime"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Select Time"
+                android:backgroundTint="@color/accent"
+                android:textColor="@color/text_primary"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDateTimeSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date &amp; Time: Not Selected"
+            android:textSize="14sp"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Competitive Level"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/rbCasual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Casual"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/rbAmateur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amateur"/>
+
+            <RadioButton
+                android:id="@+id/rbCompetitive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Highly Competitive"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSubmitGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Publish Match"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:padding="12dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
