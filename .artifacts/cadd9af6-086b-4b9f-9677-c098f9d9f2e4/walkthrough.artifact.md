@@ -1,27 +1,26 @@
-# TurfMatch Feature Extensions - Walkthrough
+# Dual-Role System (Player vs. Turf Owner) - Walkthrough & Deliverables
 
-The TurfMatch project has been successfully extended with three robust, client-side Java features using Firebase Realtime Database for data persistence.
+TurfMatch has been updated with a complete **Dual-Role Architecture**, enabling distinct experiences for **Players** and **Turf Owners**, along with direct turf booking confirmations and player fee contribution tracking.
 
-## Summary of New Features
+## What Was Implemented
 
-### 1. Hourly Rental Cost Split
-- **GameModel & CreateGameActivity**: Added `hourlyRate` (double), `durationHours` (double), and `maxPlayers` (int) inputs with validation.
-- **GameDetailActivity & Cost Calculation**: Automatically computes total cost (`hourlyRate * durationHours`) and per-player cost (`totalCost / confirmedRoster.size()`, with division-by-zero guards).
-- **Host Payment Toggles**: Host-visible checkboxes per confirmed player to toggle paid/unpaid status (`paid: boolean`) via partial updates (`updateRosterPaymentStatus`). Real-time visual payment status indicators (✓ Paid / ✗ Unpaid).
+### 1. Dual Role Selection & User Profiles
+- **Signup Role Selection (`SignupActivity`)**: Users choose between registering as a **Player** or a **Turf Owner** during account creation.
+- **Turf Owner Profile (`UserProfile`)**: When "Turf Owner" is selected, an input field prompts for their managed turf name (e.g., "Borivali Station Turf").
+- **Role-Based Login Routing (`LoginActivity`)**:
+  - **Players** are routed to `MainActivity` (Pickup Game Feed, Create Match, Map, Profile).
+  - **Turf Owners** are routed directly to `TurfOwnerDashboardActivity` (Turf Owner Portal).
 
-### 2. Host Approval / Rejection for Join Requests
-- **Roster Refactoring**: Replaced flat user list with structured maps (`pendingRequests` and `confirmedRoster`).
-- **Join Request Workflow**: Players tap "Request to Join Match", sending a request to `pendingRequests` (with "Join Request Pending" / "Join Request Sent" status).
-- **Host Management Section**: When the logged-in user is the match host, a management panel displays:
-  - **Pending Requests**: Lists requesting players with **Accept** and **Reject** buttons. Accepting checks `confirmedRoster.size() < maxPlayers` (preventing overbooking) before promoting the player.
-  - **Confirmed Roster**: Lists confirmed players with payment checkboxes.
-- **Partial Update Repository Methods**: `requestJoinGame`, `acceptJoinRequest`, and `rejectJoinRequest` manipulate sub-nodes without overwriting the entire game record.
+### 2. Direct Booking Confirmation with Turf Owners
+- **`GameModel` Turf Approval**: New matches created by players start with `turfApproved: false`.
+- **Game Detail Status**: `GameDetailActivity` displays a status badge (`Turf Booking: Pending Turf Owner Approval` vs `Confirmed by Turf Owner ✓`).
+- **Turf Owner Actions**: Turf Owners can review pending match bookings submitted to their turf and click **Confirm Booking** or **Decline Booking**.
 
-### 3. Post-Event Cleanup & Match-History Archival
-- **Opportunistic Archival (`archiveIfExpired`)**: Checks scheduled match date and time against the current device time whenever live games are loaded in `HomeFragment` or viewed in `GameDetailActivity`.
-- **Permanent Archival**: For expired matches:
-  - Writes condensed records into `matchHistory/{userId}/{gameId}` for each confirmed player containing turf name, sport, date, competitive level, final per-player cost, and paid status.
-  - Sets `archived: true` on the live game node to remove it from the active feed query while preserving permanent history.
+### 3. Player Fee Contribution Tracking
+- **Turf Owner Portal (`TurfOwnerDashboardActivity`)**: Displays all confirmed match bookings for the owner's turf along with the confirmed player roster.
+- **Payment Status Toggles**: Turf Owners (as well as match hosts) can mark individual player fee contributions as **Paid** / **Unpaid** (`paid: boolean`) using checkboxes that update Firebase in real-time.
+- **Visual Status Badges**: Confirmed player lists highlight paid statuses (`PAID ✓` in green vs `UNPAID ✗` in red).
 
-## Build & Verification
-- Compiled successfully with `./gradlew assembleDebug` (0 errors).
+## Build & Deployment Verification
+- Build verified with `./gradlew assembleDebug` (BUILD SUCCESSFUL).
+- Deployed and launched on Android emulator (`emulator-5554`).

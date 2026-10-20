@@ -3,6 +3,8 @@ package com.turfmatch.app.ui.map;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -18,20 +20,48 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.turfmatch.app.R;
 
-// CO2 & CO3 - Google Maps Turf Locator, FusedLocationProvider & Directions Intent
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+// CO2 & CO3 - Google Maps Turf Locator with 10km Radius Filtering around User Location
 public class TurfMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private static final float TEN_KM_IN_METERS = 10000f; // 10 km radius filter
+
+    // Default reference location: Borivali Railway Station, Mumbai 400092
+    private static final double BORIVALI_LAT = 19.2294;
+    private static final double BORIVALI_LNG = 72.8574;
+
+    private static class TurfItem {
+        String name;
+        String address;
+        double lat;
+        double lng;
+
+        TurfItem(String name, String address, double lat, double lng) {
+            this.name = name;
+            this.address = address;
+            this.lat = lat;
+            this.lng = lng;
+        }
+    }
+
+    private final List<TurfItem> masterTurfList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turf_map);
+
+        initMasterTurfList();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -42,12 +72,25 @@ public class TurfMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    private void initMasterTurfList() {
+        masterTurfList.add(new TurfItem("Borivali Station Turf", "Borivali Station East, Mumbai", 19.2294, 72.8574));
+        masterTurfList.add(new TurfItem("Gorai Sports Arena", "Gorai, Borivali West", 19.2370, 72.8430));
+        masterTurfList.add(new TurfItem("Shimpoli Football Turf", "Shimpoli, Borivali West", 19.2240, 72.8480));
+        masterTurfList.add(new TurfItem("IC Colony Turf Grounds", "IC Colony, Borivali West", 19.2450, 72.8520));
+        masterTurfList.add(new TurfItem("Eksar Football Ground", "Eksar Road, Borivali West", 19.2350, 72.8500));
+        masterTurfList.add(new TurfItem("Thakur Village Turf Arena", "Thakur Village, Kandivali East", 19.2110, 72.8720));
+        masterTurfList.add(new TurfItem("Kandivali Sports Complex", "Kandivali West, Mumbai", 19.2060, 72.8520));
+        masterTurfList.add(new TurfItem("Charkop Football Turf", "Charkop, Kandivali West", 19.2150, 72.8300));
+        masterTurfList.add(new TurfItem("Dahisar Sports Club Turf", "Dahisar East, Mumbai", 19.2550, 72.8630));
+        masterTurfList.add(new TurfItem("Malad Mindspace Turf", "Mindspace, Malad West", 19.1860, 72.8360));
+    }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Sample nearby turfs
-        addSampleTurfMarkers();
+        // Default display centered at Borivali Station
+        filterAndDisplayTurfsWithin10Km(BORIVALI_LAT, BORIVALI_LNG);
 
         enableUserLocation();
 
@@ -66,16 +109,41 @@ public class TurfMapActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-    private void addSampleTurfMarkers() {
-        LatLng turf1 = new LatLng(12.9716, 77.5946); // Sample City Center
-        LatLng turf2 = new LatLng(12.9352, 77.6245); // Sample Sports Complex
-        LatLng turf3 = new LatLng(12.9900, 77.5500); // Sample Arena
+    private void filterAndDisplayTurfsWithin10Km(double userLat, double userLng) {
+        if (mMap == null) return;
+        mMap.clear();
 
-        mMap.addMarker(new MarkerOptions().position(turf1).title("Urban Arena Turf X").snippet("Tap for Directions"));
-        mMap.addMarker(new MarkerOptions().position(turf2).title("Champion Sports Turf Y").snippet("Tap for Directions"));
-        mMap.addMarker(new MarkerOptions().position(turf3).title("Elite Soccer Turf Z").snippet("Tap for Directions"));
+        LatLng userPoint = new LatLng(userLat, userLng);
+        int count = 0;
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(turf1, 13f));
+        // Draw 10 km radius circle around user location
+        mMap.addCircle(new CircleOptions()
+                .center(userPoint)
+                .radius(TEN_KM_IN_METERS)
+                .strokeColor(Color.parseColor("#2E7D32"))
+                .strokeWidth(3f)
+                .fillColor(Color.parseColor("#112E7D32")));
+
+        float[] distanceResults = new float[1];
+
+        for (TurfItem turf : masterTurfList) {
+            Location.distanceBetween(userLat, userLng, turf.lat, turf.lng, distanceResults);
+            float distanceInMeters = distanceResults[0];
+
+            if (distanceInMeters <= TEN_KM_IN_METERS) {
+                count++;
+                float distanceInKm = distanceInMeters / 1000f;
+                String snippet = String.format(Locale.getDefault(), "%.1f km away • %s • Tap for Directions", distanceInKm, turf.address);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(turf.lat, turf.lng))
+                        .title(turf.name)
+                        .snippet(snippet));
+            }
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPoint, 13f));
+        Toast.makeText(this, String.format(Locale.getDefault(), "Found %d turfs within 10 km radius", count), Toast.LENGTH_SHORT).show();
     }
 
     private void enableUserLocation() {
@@ -86,8 +154,7 @@ public class TurfMapActivity extends AppCompatActivity implements OnMapReadyCall
             }
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 14f));
+                    filterAndDisplayTurfsWithin10Km(location.getLatitude(), location.getLongitude());
                 }
             });
         } else {

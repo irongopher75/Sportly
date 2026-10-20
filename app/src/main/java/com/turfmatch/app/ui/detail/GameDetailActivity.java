@@ -25,13 +25,13 @@ import com.turfmatch.app.repository.FirebaseGameRepository;
 import java.util.Locale;
 import java.util.Map;
 
-// CO3 - Game Detail Activity handling Cost Split, Host Approval/Rejection, Payment Toggles & Deletion
+// CO3 - Game Detail Activity handling Cost Split, Turf Approval Status, Host Controls & Payment Toggles
 public class GameDetailActivity extends AppCompatActivity {
     private String gameId;
     private FirebaseGameRepository repository;
     private FirebaseAuth mAuth;
 
-    private TextView tvTitle, tvSport, tvTurf, tvDateTime, tvLevel, tvCostSplit;
+    private TextView tvTitle, tvSport, tvTurf, tvTurfApprovalStatus, tvDateTime, tvLevel, tvCostSplit;
     private Button btnJoinGame, btnDeleteGame;
     private LinearLayout layoutHostSection, layoutPendingRequests, layoutConfirmedRoster;
 
@@ -48,6 +48,7 @@ public class GameDetailActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tvTitle);
         tvSport = findViewById(R.id.tvSport);
         tvTurf = findViewById(R.id.tvTurf);
+        tvTurfApprovalStatus = findViewById(R.id.tvTurfApprovalStatus);
         tvDateTime = findViewById(R.id.tvDateTime);
         tvLevel = findViewById(R.id.tvLevel);
         tvCostSplit = findViewById(R.id.tvCostSplit);
@@ -81,6 +82,15 @@ public class GameDetailActivity extends AppCompatActivity {
                             tvTurf.setText(String.format(Locale.getDefault(), "Turf: %s", game.getTurfName()));
                             tvDateTime.setText(String.format(Locale.getDefault(), "Date & Time: %s %s", game.getDate(), game.getTime()));
                             tvLevel.setText(String.format(Locale.getDefault(), "Competitive Level: %s", game.getCompetitiveLevel()));
+
+                            // Turf Approval Status
+                            if (game.isTurfApproved()) {
+                                tvTurfApprovalStatus.setText("Turf Booking: Confirmed by Turf Owner ✓");
+                                tvTurfApprovalStatus.setTextColor(Color.parseColor("#2E7D32"));
+                            } else {
+                                tvTurfApprovalStatus.setText("Turf Booking: Pending Turf Owner Approval");
+                                tvTurfApprovalStatus.setTextColor(Color.parseColor("#E65100"));
+                            }
 
                             // Compute Cost Split
                             Map<String, PlayerInfo> confirmed = game.getConfirmedRoster();

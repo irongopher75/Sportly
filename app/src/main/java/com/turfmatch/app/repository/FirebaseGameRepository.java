@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-// CO3 - Firebase DB Repository Helper Class with Cost Split, Host Approval & Archival support
+// CO3 - Firebase DB Repository Helper Class with Cost Split, Host Approval & Turf Owner Confirmation
 public class FirebaseGameRepository {
     private final DatabaseReference databaseRef;
 
@@ -46,7 +46,7 @@ public class FirebaseGameRepository {
         }
     }
 
-    // READ: Load Active (Non-archived) Games Feed & Check Expiration
+    // READ: Load Active (Non-archived) Games Feed
     public void getGames(OnGamesLoadedCallback callback) {
         databaseRef.child("games").addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,6 +61,50 @@ public class FirebaseGameRepository {
                     }
                 }
                 callback.onGamesLoaded(games);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onGamesLoaded(new ArrayList<>());
+            }
+        });
+    }
+
+    // DUAL ROLE: Confirm Turf Booking by Turf Owner
+    public void confirmTurfBooking(String gameId, String turfOwnerId, OnCompleteCallback callback) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("turfApproved", true);
+        updates.put("turfOwnerId", turfOwnerId);
+
+        databaseRef.child("games").child(gameId).updateChildren(updates)
+                .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
+    }
+
+    // DUAL ROLE: Decline/Reject Turf Booking by Turf Owner
+    public void rejectTurfBooking(String gameId, OnCompleteCallback callback) {
+        databaseRef.child("games").child(gameId).removeValue()
+                .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
+    }
+
+    // DUAL ROLE: Get Bookings associated with a specific Turf Owner's Turf Name
+    public void getTurfOwnerBookings(String ownedTurfName, OnGamesLoadedCallback callback) {
+        databaseRef.child("games").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<GameModel> turfBookings = new ArrayList<>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    GameModel game = ds.getValue(GameModel.class);
+                    if (game != null && !game.isArchived()) {
+                        if (ownedTurfName != null && !ownedTurfName.isEmpty()) {
+                            if (game.getTurfName() != null && game.getTurfName().toLowerCase().contains(ownedTurfName.toLowerCase())) {
+                                turfBookings.add(game);
+                            }
+                        } else {
+                            turfBookings.add(game); // Fallback load all games for turf management
+                        }
+                    }
+                }
+                callback.onGamesLoaded(turfBookings);
             }
 
             @Override
@@ -105,7 +149,7 @@ public class FirebaseGameRepository {
         });
     }
 
-    // ACCEPT JOIN REQUEST: Move user from pendingRequests to confirmedRoster (if under maxPlayers)
+    // ACCEPT JOIN REQUEST: Move user from pendingRequests to confirmedRoster
     public void acceptJoinRequest(String gameId, String userId, OnAcceptResultCallback callback) {
         DatabaseReference gameRef = databaseRef.child("games").child(gameId);
         gameRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -167,7 +211,7 @@ public class FirebaseGameRepository {
                 .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
     }
 
-    // ARCHIVE IF EXPIRED: Check date/time against current device time, archive and write to matchHistory
+    // ARCHIVE IF EXPIRED: Check date/time against current device time
     public void archiveIfExpired(GameModel game, OnCompleteCallback callback) {
         if (game == null || game.isArchived() || game.getId() == null) {
             if (callback != null) callback.onComplete(false);
@@ -223,7 +267,7 @@ public class FirebaseGameRepository {
                 .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
     }
 
-    // READ: Load User Match History from confirmedRoster or matchHistory node
+    // READ: Load User Match History
     public void getUserMatchHistory(String userId, OnGamesLoadedCallback callback) {
         databaseRef.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

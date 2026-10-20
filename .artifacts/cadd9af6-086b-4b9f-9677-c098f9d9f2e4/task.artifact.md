@@ -1,9 +1,12 @@
-# Task List - TurfMatch Feature Extensions
+# Task List - Dual Role System (Player vs Turf Owner)
 
-- [x] Create `PlayerInfo.java` data model & update `GameModel.java` with hourlyRate, durationHours, maxPlayers, pendingRequests, confirmedRoster, and archived flag.
-- [x] Update `FirebaseGameRepository.java` with methods for request join, accept join request, reject join request, update payment status, and archive expired games.
-- [x] Update `CreateGameActivity.java` and `activity_create_game.xml` to include inputs for hourly rate, duration, and max players with validation.
-- [x] Update `GameDetailActivity.java` and `activity_game_detail.xml` to compute and display rental cost split (total & per-player), show join request status, host pending requests management (Accept/Reject), and host payment status toggles.
-- [x] Integrate opportunistic `archiveIfExpired` checks in `HomeFragment.java` and `GameDetailActivity.java`.
-- [x] Build and verify with `./gradlew assembleDebug`.
-- [x] Create walkthrough artifact (`walkthrough.artifact.md`).
+- [x] Update `UserProfile.java` with `userType` and `ownedTurfName`.
+- [x] Update `GameModel.java` with `turfApproved` and `turfOwnerId`.
+- [x] Update `SignupActivity.java` & `activity_signup.xml` with role selection (Player / Turf Owner) and conditional turf name field.
+- [x] Update `LoginActivity.java` to perform role-based routing (Player -> MainActivity, Turf Owner -> TurfOwnerDashboardActivity).
+- [x] Update `FirebaseGameRepository.java` with `confirmTurfBooking`, `rejectTurfBooking`, and `getTurfOwnerBookings`.
+- [x] Create `TurfOwnerDashboardActivity.java` & `activity_turf_owner_dashboard.xml` for Turf Owners to confirm bookings and manage player fee contributions.
+- [x] Update `GameDetailActivity.java` & `activity_game_detail.xml` to display turf approval status and allow Turf Owners to confirm bookings and toggle player payment statuses.
+- [x] Verify build with `./gradlew assembleDebug`.
+- [x] Deploy to emulator.
+- [x] Create `walkthrough.artifact.md`.

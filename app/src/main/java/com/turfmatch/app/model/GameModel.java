@@ -3,7 +3,7 @@ package com.turfmatch.app.model;
 import java.util.HashMap;
 import java.util.Map;
 
-// CO3 - Firebase Data Model for Pick-up Games with Cost Split, Host Approval & Archival support
+// CO3 - Firebase Data Model for Pick-up Games with Turf Approval & Cost Split support
 public class GameModel {
     private String id;
     private String title;
@@ -14,7 +14,6 @@ public class GameModel {
     private String competitiveLevel;
     private String hostId;
     
-    // New fields for Feature 1 & 2 & 3
     private double hourlyRate;
     private double durationHours;
     private int maxPlayers;
@@ -22,10 +21,15 @@ public class GameModel {
     private Map<String, PlayerInfo> confirmedRoster;
     private boolean archived;
 
+    // Dual-Role Turf Confirmation fields
+    private boolean turfApproved; // Turf Owner direct booking confirmation
+    private String turfOwnerId;
+
     public GameModel() {
         // Required for Firebase
         pendingRequests = new HashMap<>();
         confirmedRoster = new HashMap<>();
+        turfApproved = false;
     }
 
     public GameModel(String id, String title, String sport, String turfName, String date, String time, 
@@ -45,6 +49,8 @@ public class GameModel {
         this.pendingRequests = pendingRequests != null ? pendingRequests : new HashMap<>();
         this.confirmedRoster = confirmedRoster != null ? confirmedRoster : new HashMap<>();
         this.archived = false;
+        this.turfApproved = false;
+        this.turfOwnerId = "";
     }
 
     public String getId() { return id; }
@@ -88,4 +94,10 @@ public class GameModel {
 
     public boolean isArchived() { return archived; }
     public void setArchived(boolean archived) { this.archived = archived; }
+
+    public boolean isTurfApproved() { return turfApproved; }
+    public void setTurfApproved(boolean turfApproved) { this.turfApproved = turfApproved; }
+
+    public String getTurfOwnerId() { return turfOwnerId; }
+    public void setTurfOwnerId(String turfOwnerId) { this.turfOwnerId = turfOwnerId; }
 }

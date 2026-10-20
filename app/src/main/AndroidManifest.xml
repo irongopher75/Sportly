@@ -21,7 +21,7 @@
         <!-- Google Maps API Key Meta-Data -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_GOOGLE_MAPS_API_KEY_HERE" />
+            android:value="AIzaSyDHEhhOd4UsFdZgwA58jOJ6Xe8jwexZ0fo" />
 
         <!-- FileProvider for secure camera image capture and file sharing -->
         <provider
@@ -51,6 +51,7 @@
         <activity android:name=".ui.map.TurfMapActivity" android:exported="false" />
         <activity android:name=".ui.profile.ProfileActivity" android:exported="false" />
         <activity android:name=".ui.profile.MatchHistoryActivity" android:exported="false" />
+        <activity android:name=".ui.turfowner.TurfOwnerDashboardActivity" android:exported="false" />
 
     </application>
 

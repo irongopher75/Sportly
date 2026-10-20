@@ -38,6 +38,17 @@
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp"/>
 
+        <!-- Turf Approval Status Badge -->
+        <TextView
+            android:id="@+id/tvTurfApprovalStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Turf Booking: Pending Approval"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#E65100"
+            android:layout_marginBottom="8dp"/>
+
         <TextView
             android:id="@+id/tvDateTime"
             android:layout_width="match_parent"

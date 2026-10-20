@@ -1,39 +1,36 @@
 {
   "project_info": {
-    "project_number": "123456789012",
-    "firebase_url": "https://turfmatch-default-rtdb.firebaseio.com",
-    "project_id": "turfmatch",
-    "storage_bucket": "turfmatch.appspot.com"
+    "project_number": "975781442446",
+    "project_id": "turfmatch-3c94b",
+    "storage_bucket": "turfmatch-3c94b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:abcdef1234567890",
+        "mobilesdk_app_id": "1:975781442446:android:010403d28446ee962b6adf",
         "android_client_info": {
           "package_name": "com.turfmatch.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "975781442446-8j19vd9n1gvth9go2i01c4oeqvtcnk79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDummyKeyForBuildVerificationOnly"
+          "current_key": "AIzaSyAwMrMLZr-7uZDw54qMR2kooR3GGX8oqAk"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": "1"
-        },
-        "app_service": {
-          "status": "1"
-        },
-        "cloud_messaging_service": {
-          "status": "1"
-        },
-        "app_indexing_service": {
-          "status": "1"
-        },
-        "ads_service": {
-          "status": "1"
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975781442446-8j19vd9n1gvth9go2i01c4oeqvtcnk79.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
